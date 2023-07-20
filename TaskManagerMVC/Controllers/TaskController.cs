@@ -58,14 +58,14 @@ namespace TaskManagerMVC.Controllers
 
 		public IActionResult Update(int? id)
 		{
-			TaskModel taskChosen = _context.Tasks.FirstOrDefault(x => x.Id == id);
+			TaskModel taskChosenToUpdate = _context.Tasks.FirstOrDefault(x => x.Id == id);
 
-			if (id == 0 || id == null || taskChosen == null)
+			if (id == 0 || id == null || taskChosenToUpdate == null)
 			{
 				return NotFound();
 			}
 
-			return View(taskChosen);
+			return View(taskChosenToUpdate);
 		}
 
 		[HttpPost]
@@ -80,6 +80,34 @@ namespace TaskManagerMVC.Controllers
 			}
 
 			return View();
+		}
+
+		public IActionResult Delete(int? id)
+		{
+			TaskModel taskChosenDelete = _context.Tasks.FirstOrDefault(x => x.Id == id);
+
+			if (id == 0 || id == null || taskChosenDelete == null)
+			{
+				return NotFound();
+			}
+
+			return View(taskChosenDelete);
+		}
+
+		[HttpPost, ActionName("Delete")]
+		public IActionResult DeletePOST(int? id)
+		{
+			TaskModel task = _context.Tasks.Find(id);
+
+			if (task == null)
+			{
+				return NotFound();
+			}
+
+			_context.Tasks.Remove(task);
+			_context.SaveChanges();
+
+			return RedirectToAction("Index");
 		}
 	}
 }
