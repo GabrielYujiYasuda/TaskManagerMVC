@@ -2,23 +2,10 @@
 using TaskManagerMVC.Data;
 using TaskManagerMVC.Models;
 
-//GET ALL - done
-
-//GET ONE TO CREATE - done
-//CREATE - done
-
-//GET ONE TO DELETE - done
-//DELETE - done
-
-//GET ONE DO DELETE
-//UPDATE
-
-
 namespace TaskManagerMVC.Controllers
 {
 	public class TaskController : Controller
 	{
-		//Create the DB connection
 		private readonly ApplicationDbContext _context;
 
 
@@ -27,7 +14,6 @@ namespace TaskManagerMVC.Controllers
 			_context = context;
         }
 
-		//GET ALL
         public IActionResult Index()
 		{
 			List<TaskModel> taskList = _context.Tasks.ToList();
@@ -35,13 +21,11 @@ namespace TaskManagerMVC.Controllers
 			return View(taskList);
 		}
 
-		//GET ONE TO CREATE
 		public IActionResult Create()
 		{
 			return View();
 		}
 
-		//CREATE
 		[HttpPost]
 		public IActionResult Create(TaskModel task)
 		{
@@ -49,6 +33,8 @@ namespace TaskManagerMVC.Controllers
 			{
 				_context.Tasks.Add(task);
 				_context.SaveChanges();
+
+				TempData["success"] = "Category created successfully";
 
 				return RedirectToAction("Index");
 			}
@@ -75,6 +61,8 @@ namespace TaskManagerMVC.Controllers
 			{
 				_context.Tasks.Update(task);
 				_context.SaveChanges();
+
+				TempData["success"] = "Category updated successfully";
 
 				return RedirectToAction("Index");
 			}
@@ -106,6 +94,8 @@ namespace TaskManagerMVC.Controllers
 
 			_context.Tasks.Remove(task);
 			_context.SaveChanges();
+
+			TempData["success"] = "Category deleted successfully";
 
 			return RedirectToAction("Index");
 		}
